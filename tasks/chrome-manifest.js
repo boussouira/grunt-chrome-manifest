@@ -71,7 +71,7 @@ module.exports = function (grunt) {
       // Add contents css to cssmin task
       // Add contents script to concat task.
       // NOTE: only work with one content script match
-      var content_scripcontent_scripts_targetts_target = path.join(dest, 'scripts/contentscript.js');
+      var content_scripts_target = path.join(dest, 'scripts/contentscript.js');
       concat.content_scripts = {
         src: [],
         dest: content_scripts_target
