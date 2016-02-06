@@ -68,18 +68,29 @@ module.exports = function (grunt) {
         }
       }
 
-      // Add contents scripts and css to uglify and cssmin task
-      // Will not add script to concat task.
-      // Keep each content scripts for using on different match patterns.
-      _.each(manifest.content_scripts, function (contentScript) {
-        _.each(contentScript.js, function (js) {
-          uglify[path.join(dest, js)] = path.join(src, js);
-        });
+      // Add contents css to cssmin task
+      // Add contents script to concat task.
+      // NOTE: only work with one content script match
+      var content_scripcontent_scripts_targetts_target = path.join(dest, 'scripts/contentscript.js');
+      concat.content_scripts = {
+        src: [],
+        dest: content_scripts_target
+      };
 
-        _.each(contentScript.css, function (css) {
-          cssmin[path.join(dest, css)] = path.join(src, css);
-        });
+      _.each(manifest.content_scripts[0].js, function (script) {
+          concat.content_scripts.src.push(path.join(src, script));
       });
+
+      uglify[content_scripts_target] = content_scripts_target;
+
+      _.each(manifest.content_scripts, function (contentScript) {
+
+          _.each(contentScript.css, function (css) {
+            cssmin[path.join(dest, css)] = path.join(src, css);
+          });
+      });
+
+      manifest.content_scripts[0].js = ['scripts/contentscript.js'];
 
       // Update each grunt configs.
       grunt.config('concat', concat);
