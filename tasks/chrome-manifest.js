@@ -71,26 +71,42 @@ module.exports = function (grunt) {
       // Add contents css to cssmin task
       // Add contents script to concat task.
       // NOTE: only work with one content script match
-      var content_scripts_target = path.join(dest, 'scripts/contentscript.js');
-      concat.content_scripts = {
-        src: [],
-        dest: content_scripts_target
-      };
+      for (var i = 0; i < manifest.content_scripts.length; i++) {
+        var suffix = '';
 
-      _.each(manifest.content_scripts[0].js, function (script) {
-          concat.content_scripts.src.push(path.join(src, script));
-      });
+        if (manifest.content_scripts.length > 1) {
+          suffix = i+1;
+        }
 
-      uglify[content_scripts_target] = content_scripts_target;
+        var content_scripts_target = path.join(dest, 'scripts/contentscript'+suffix+'.js');
+        concat['content_scripts'+suffix] = {
+          src: [],
+          dest: content_scripts_target
+        };
 
-      _.each(manifest.content_scripts, function (contentScript) {
+        _.each(manifest.content_scripts[i].js, function (script) {
+          concat['content_scripts'+suffix].src.push(path.join(src, script));
+        });
 
-          _.each(contentScript.css, function (css) {
-            cssmin[path.join(dest, css)] = path.join(src, css);
+        uglify[content_scripts_target] = content_scripts_target;
+        manifest.content_scripts[i].js = ['scripts/contentscript'+suffix+'.js'];
+
+        if (manifest.content_scripts[i].css && manifest.content_scripts[i].css.length) {
+          var content_scripts_css_target = path.join(dest, 'scripts/contentscript'+suffix+'.css');
+          concat['content_scripts_css'+suffix] = {
+            src: [],
+            dest: content_scripts_css_target
+          };
+
+          _.each(manifest.content_scripts[i].css, function (css) {
+            concat['content_scripts_css'+suffix].src.push(path.join(src, css));
           });
-      });
 
-      manifest.content_scripts[0].js = ['scripts/contentscript.js'];
+          cssmin[content_scripts_css_target] = content_scripts_css_target;
+          manifest.content_scripts[i].css = ['styles/contentscript'+suffix+'.css'];
+        }
+      }
+
 
       // Update each grunt configs.
       grunt.config('concat', concat);

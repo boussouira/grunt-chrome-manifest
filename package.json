@@ -1,6 +1,6 @@
 {
   "name": "grunt-chrome-manifest",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "",
   "keywords": [
     "gruntplugin",
@@ -17,7 +17,7 @@
   "main": "Gruntfile.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ragingwind/grunt-chrome-manifest.git"
+    "url": "git@github.com:boussouira/grunt-chrome-manifest.git"
   },
   "scripts": {
     "test": "grunt"
