@@ -92,7 +92,7 @@ module.exports = function (grunt) {
         manifest.content_scripts[i].js = ['scripts/contentscript'+suffix+'.js'];
 
         if (manifest.content_scripts[i].css && manifest.content_scripts[i].css.length) {
-          var content_scripts_css_target = path.join(dest, 'scripts/contentscript'+suffix+'.css');
+          var content_scripts_css_target = path.join(dest, 'styles/contentscript'+suffix+'.css');
           concat['content_scripts_css'+suffix] = {
             src: [],
             dest: content_scripts_css_target
